@@ -11,26 +11,26 @@
 
 namespace clever
 {
-template<typename... Args>
+template<typename ...Args>
 class kernel_baseN : public clever::kernel_base
 {
 public:
 
     kernel_baseN(const std::string &name, const clever::icontext &context, const std::string &sources, const std::string &preprocessor)
-        : kernel_base(name, context, sources, preprocessor) 
+        : kernel_base(name, context, sources, preprocessor)
     {
-        assert (kernel_);
+        assert(kernel_);
     }
 
-    virtual ~kernel_baseN(){}   
-    
+    virtual ~kernel_baseN() {}
+
     cl_event run(Args... args, const clever::range &globalRange, const clever::range &localRange) const
     {
         kernel_parameter_list plist;
- 
+
         fill_kernel_parameter_list(plist, args...);
 
-        assert (kernel_);
+        assert(kernel_);
 
         return context_.execute_params(plist, *kernel_, globalRange, localRange);
     }
@@ -41,25 +41,27 @@ public:
     }
     void operator()(Args... args, range const &globalRange, range const &localRange)
     {
-        run (args..., globalRange, localRange);
+        run(args..., globalRange, localRange);
     }
-    void operator()(Args... args, range const &globalRange )
+    void operator()(Args... args, range const &globalRange)
     {
-        run (args..., globalRange);
+        run(args..., globalRange);
     }
 
 private:
 
-    template<typename T, typename...Args_>
-    void fill_kernel_parameter_list(kernel_parameter_list &plist, T data, Args_...args) const {
-	plist.push_back( parameter_factory<T>::parameter(data));
+    template<typename T, typename ...Args_>
+    void fill_kernel_parameter_list(kernel_parameter_list &plist, T &data, Args_ &&...args) const
+    {
+        plist.push_back(parameter_factory<T>::parameter(data));
         fill_kernel_parameter_list(plist, args...);
     }
-    
+
     template<typename T>
-    void fill_kernel_parameter_list(kernel_parameter_list &plist, T data) const {
+    void fill_kernel_parameter_list(kernel_parameter_list &plist, T &data) const
+    {
         //base case for fill_kernel_parameter_list template recursion.
-	plist.push_back( parameter_factory<T>::parameter(data));
+        plist.push_back(parameter_factory<T>::parameter(data));
     }
 };
 
@@ -76,8 +78,8 @@ private:                                                                   \
     FUNCTION                                                               \
 } NAME
 
-#define KERNEL_CLASS( NAME, FUNCTION, ... ) APPLY_DEFINES_CLASS(  NAME, FUNCTION, #FUNCTION, "", __VA_ARGS__ ) 
-#define KERNEL_CLASSP( NAME, PREPROCESSOR, FUNCTION, ... ) APPLY_DEFINES_CLASS(  NAME, FUNCTION, #FUNCTION, PREPROCESSOR, __VA_ARGS__ ) 
+#define KERNEL_CLASS( NAME, FUNCTION, ... ) APPLY_DEFINES_CLASS(  NAME, FUNCTION, #FUNCTION, "", __VA_ARGS__ )
+#define KERNEL_CLASSP( NAME, PREPROCESSOR, FUNCTION, ... ) APPLY_DEFINES_CLASS(  NAME, FUNCTION, #FUNCTION, PREPROCESSOR, __VA_ARGS__ )
 
 }
 
