@@ -78,7 +78,7 @@ public:
 	// size of one entry ( > one vector ) in bytes
 	static constexpr::size_t value_entry_size = D * sizeof(value_type);
 
-	explicit vector(context & c, size_t array_count = 1) :
+	explicit vector(size_t array_count, context & c) :
 			datatype_base(c, array_count)
 	{
 		transfer::create(*this, array_count, c);

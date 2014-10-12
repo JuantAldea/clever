@@ -30,9 +30,12 @@ struct context_settings
 			cl_command_queue_properties cmd_queue_properties = 0,
 			int useComputeUnits = -1) :
 
-			m_platform_name(platform_name), m_device_type(device_type), m_build_options(
-					build_options), m_profile(profile), m_cmd_queue_properties(
-					cmd_queue_properties), m_useComputeUnits(useComputeUnits)
+			m_platform_name(platform_name),
+			m_device_type(device_type),
+			m_build_options(build_options),
+			m_profile(profile),
+			m_cmd_queue_properties(cmd_queue_properties),
+			m_useComputeUnits(useComputeUnits)
 	{
 
 	}
@@ -52,7 +55,15 @@ struct context_settings
 
 	static context_settings default_cpu()
 	{
-		return context_settings( );
+		return context_settings();
+	}
+
+	static context_settings amd()
+	{
+		return context_settings("AMD Accelerated Parallel Processing",
+			opencl::device_type::cpu,
+			"-g -DATI_DEBUG_MODE"
+		);
 	}
 
 };

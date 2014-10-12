@@ -194,7 +194,6 @@ protected:
     unsigned int get_group_id( unsigned int ){ return 0; }
     unsigned int get_num_groups( unsigned int ){ return 0; }
 
-    unsigned int atomic_or(unsigned int * x, unsigned int a) { return (*x) ^ a; }
 
     unsigned int mul24(unsigned int a, unsigned int b){return a*b;}
     unsigned int popcount(unsigned int a) { return 0; }
@@ -205,6 +204,18 @@ protected:
     TType atomic_inc( TType * p ) { return TType(); }
     template <class TType >
     TType atomic_add( TType * p, TType v ) { return TType(); }
+   
+    template <class TType >
+    TType atomic_max( TType * p, TType v ) { return TType(); }
+
+    template <class TType >
+    TType abs_diff( TType, TType ) { return TType(); }
+
+    //template <class TType >
+    //TType atomic_or( TType * p, TType v ) { return TType(); }
+    
+    unsigned int atomic_or(unsigned int * x, unsigned int a) { return (*x) ^ a; }
+    
 
     double native_sqrt( double d ){ return 0.0; }
     double native_log( double d ){ return 0.0; }
@@ -217,6 +228,10 @@ protected:
 
     template <typename T>
     T cross(T a, T b) { return T(); }
+
+    template <typename T, template <typename T> class V>
+    T dot(V<T> a, V<T> b) { return T(); }
+
 
     template <typename T>
     T normalize(T a) { return T(); }
