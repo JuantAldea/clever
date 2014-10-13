@@ -24,9 +24,10 @@ namespace clever
 
 struct context_settings
 {
+    //TODO remember to remove -g
 	context_settings(std::string const& platform_name = "",
 			opencl::device_type device_type = opencl::device_type::default_,
-			std::string build_options = "", bool profile = false,
+			std::string build_options = "-g", bool profile = false,
 			cl_command_queue_properties cmd_queue_properties = 0,
 			int useComputeUnits = -1) :
 
@@ -62,7 +63,7 @@ struct context_settings
 	{
 		return context_settings("AMD Accelerated Parallel Processing",
 			opencl::device_type::cpu,
-			"-g -DATI_DEBUG_MODE"
+			"-DATI_DEBUG_MODE"
 		);
 	}
 
@@ -179,8 +180,9 @@ public:
 		init_with_settings(settings);
 	}
 
+    //TODO remember to remove -g
 	context(std::string platformName, opencl::device_type dev_type,
-			std::string buildProperties = "",
+			std::string buildProperties = "-g",
 			cl_command_queue_properties queueSettings = 0, bool profileKernels =
 					false, int threadCount = -1) :
 			sub_dev_id_(NULL)
@@ -285,7 +287,7 @@ public:
 
 	void release_buffer(cl_mem memory_handle) const
 	{
-		size_t r = allocatedMemory.erase(memory_handle);
+		allocatedMemory.erase(memory_handle);
 
 		//if(r != 1)
 			//std::cerr << "Could not remove memory object: " << memory_handle << std::endl;
