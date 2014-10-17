@@ -64,8 +64,7 @@ struct context_settings
 	static context_settings amd_gpu()
 	{
 		return context_settings(opencl::device_type::gpu,
-			opencl::PlatformNameAMD(),
-			"-DATI_DEBUG_MODE"
+			opencl::PlatformNameAMD()
 		);
 	}
 	
@@ -77,8 +76,7 @@ struct context_settings
 	static context_settings amd_cpu()
 	{
 		return context_settings(opencl::device_type::cpu,
-			opencl::PlatformNameAMD(),
-			"-DATI_DEBUG_MODE"
+			opencl::PlatformNameAMD()
 		);
 	}
 
