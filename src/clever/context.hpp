@@ -25,8 +25,8 @@ namespace clever
 struct context_settings
 {
     //TODO remember to remove -g
-	context_settings(std::string const& platform_name = "",
-			opencl::device_type device_type = opencl::device_type::default_,
+	context_settings(opencl::device_type device_type = opencl::device_type::default_,
+			std::string const& platform_name = "",
 			std::string build_options = "-g", bool profile = false,
 			cl_command_queue_properties cmd_queue_properties = 0,
 			int useComputeUnits = -1) :
@@ -51,22 +51,43 @@ struct context_settings
 	static context_settings default_gpu()
 	{
 		// TODO: make this more generic
-		return context_settings("NVIDIA CUDA", opencl::device_type::gpu);
+		return context_settings(opencl::device_type::gpu);
 	}
 
+	static context_settings nvidia_gpu()
+	{
+		return context_settings(opencl::device_type::gpu,
+			opencl::PlatformNameNVIDIA()
+		);
+	}
+	
+	static context_settings amd_gpu()
+	{
+		return context_settings(opencl::device_type::gpu,
+			opencl::PlatformNameAMD(),
+			"-DATI_DEBUG_MODE"
+		);
+	}
+	
 	static context_settings default_cpu()
 	{
 		return context_settings();
 	}
 
-	static context_settings amd()
+	static context_settings amd_cpu()
 	{
-		return context_settings("AMD Accelerated Parallel Processing",
-			opencl::device_type::cpu,
+		return context_settings(opencl::device_type::cpu,
+			opencl::PlatformNameAMD(),
 			"-DATI_DEBUG_MODE"
 		);
 	}
 
+	static context_settings intel_cpu()
+	{
+		return context_settings(opencl::device_type::cpu,
+			opencl::PlatformNameIntel()
+		);
+	}
 };
 
 struct source_modifier: public boost::noncopyable
@@ -181,13 +202,13 @@ public:
 	}
 
     //TODO remember to remove -g
-	context(std::string platformName, opencl::device_type dev_type,
+	context(opencl::device_type dev_type, std::string platformName,
 			std::string buildProperties = "-g",
 			cl_command_queue_properties queueSettings = 0, bool profileKernels =
 					false, int threadCount = -1) :
 			sub_dev_id_(NULL)
 	{
-		context_settings set(platformName, dev_type, buildProperties,
+		context_settings set(dev_type, platformName, buildProperties,
 				profileKernels, queueSettings, threadCount);
 
 		m_settings = set;
