@@ -83,7 +83,8 @@ struct context_settings
 	static context_settings intel_cpu()
 	{
 		return context_settings(opencl::device_type::cpu,
-			opencl::PlatformNameIntel()
+			opencl::PlatformNameIntel(),
+			"-g -cl-opt-disable"
 		);
 	}
 };
