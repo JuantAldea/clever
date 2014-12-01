@@ -372,6 +372,7 @@ public:
 		cl_uint intTmp;
 		ERROR_HANDLER(
 				ERROR = ::clGetDeviceInfo( dev_id, CL_DEVICE_MAX_COMPUTE_UNITS, sizeof( cl_uint), &intTmp, NULL ));
+		std::cout << "MAX UNITS: " << intTmp << std::endl << std::flush;
 		return intTmp;
 	}
 
@@ -428,15 +429,13 @@ public:
 						sizeof(cl_uint), &intTmp, NULL);
 				std::cout << "     Devices Max Compute Units: " << intTmp
 						<< std::endl;
+				size_t tmp[3];
+				::clGetDeviceInfo(devices[i_dev], CL_DEVICE_MAX_WORK_GROUP_SIZE, sizeof(size_t), &tmp, NULL);
+				std::cout << "     Devices Max Work Group Size: " << tmp[0] << std::endl;
 
-				::clGetDeviceInfo(devices[i_dev], CL_DEVICE_MAX_WORK_GROUP_SIZE,
-						sizeof(cl_uint), &intTmp, NULL);
-				std::cout << "     Devices Max Work Group Size: " << intTmp
-						<< std::endl;
-				::clGetDeviceInfo(devices[i_dev], CL_DEVICE_MAX_WORK_ITEM_SIZES,
-						sizeof(cl_uint), &intTmp, NULL);
-				std::cout << "     Devices Max Work Item Size: " << intTmp
-						<< std::endl;
+				::clGetDeviceInfo(devices[i_dev], CL_DEVICE_MAX_WORK_ITEM_SIZES, sizeof(tmp), &tmp, NULL);
+				std::cout << "     Devices Max Work Item Size: " << tmp[0] << " " << tmp[1] << " " <<tmp[2] << std::endl;
+
 				::clGetDeviceInfo(devices[i_dev], CL_DEVICE_GLOBAL_MEM_SIZE,
 						sizeof(cl_ulong), &longTmp, NULL);
 				std::cout << "     Global Memory Size: " << longTmp*1E-6 << " MB"
