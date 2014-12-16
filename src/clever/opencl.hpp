@@ -372,7 +372,6 @@ public:
 		cl_uint intTmp;
 		ERROR_HANDLER(
 				ERROR = ::clGetDeviceInfo( dev_id, CL_DEVICE_MAX_COMPUTE_UNITS, sizeof( cl_uint), &intTmp, NULL ));
-		std::cout << "MAX UNITS: " << intTmp << std::endl << std::flush;
 		return intTmp;
 	}
 

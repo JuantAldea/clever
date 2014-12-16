@@ -170,6 +170,18 @@ inline kernel_parameter *parameter_factory < uint >::parameter( uint & input)
 }
 
 template <>
+inline kernel_parameter *parameter_factory < const unsigned long >::parameter(const unsigned long & input)
+{
+	return new kernel_parameter( &input, sizeof ( cl_ulong ), "cl_ulong"  );
+}
+
+template <>
+inline kernel_parameter *parameter_factory < unsigned long >::parameter(unsigned long & input)
+{
+	return new kernel_parameter( &input, sizeof ( cl_ulong ), "cl_ulong"  );
+}
+
+template <>
 inline kernel_parameter *parameter_factory < local_param >::parameter( local_param & input)
 {
 	return new kernel_parameter( NULL, input.nEntries * input.sizePerEntry, "__local"  );
